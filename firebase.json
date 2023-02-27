@@ -1,7 +1,4 @@
 {
-  "functions//todo": {
-    "source": "server/functions"
-  },
   "hosting": {
     "public": "client/build",
     "rewrites": [
