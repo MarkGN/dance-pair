@@ -3,7 +3,7 @@
 /client/public
 
 /server/.env
+/server/firebase-config.json
 /server/node_modules
 
 todo.md
-server/.env
