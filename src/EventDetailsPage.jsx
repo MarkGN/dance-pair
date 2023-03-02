@@ -13,7 +13,7 @@ const initialValues = {
   description: '',
 };
 
-export default function MyForm() {
+export default function EventDetailsPage() {
   const handleSubmit = (values, actions) => {
     axios.post('/events', values)
       .then(() => {

@@ -1,9 +1,3 @@
-/client/build
-/client/node_modules
-/client/public
-
-/server/.env
-/server/firebase-config.json
-/server/node_modules
-
 todo.md
+node_modules
+public
