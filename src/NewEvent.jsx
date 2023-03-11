@@ -1,15 +1,20 @@
+import axios from 'axios';
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
+import FormItem from "./FormItem";
 import * as Yup from 'yup';
-import axios from 'axios';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Required'),
+  time: Yup.date().required("Required"),
+  location: Yup.string().required("Required"),
   description: Yup.string().required('Required'),
 });
 
 const initialValues = {
   name: "event name",
+  time: null,
+  location: null,
   description: "event description",
 };
 
@@ -52,36 +57,12 @@ export default function NewEvent() {
     >
       {({ errors, touched }) => (
         <Form>
-        <div>
-          <label htmlFor="name">Name*</label>
-          <Field name="name" type="text" />
-          {errors.name && touched.name && <div>{errors.name}</div>}
-        </div>
-          <div>
-            <label htmlFor="time">Time*</label>
-            <Field name="time" type="datetime-local" />
-            {errors.time && touched.time && <div>{errors.time}</div>}
-          </div>
-          <div>
-            <label htmlFor="location">Location*</label>
-            <Field name="location" type="text" />
-            {errors.location && touched.location && <div>{errors.location}</div>}
-          </div>
-          <div>
-            <label htmlFor="description">Description*</label>
-            <Field name="description" type="text" />
-            {errors.description && touched.description && <div>{errors.description}</div>}
-          </div>
-          {/* <div>
-            <label htmlFor="endTime">End time</label>
-            <Field name="endTime" type="datetime-local" />
-            {errors.endTime && touched.endTime && <div>{errors.endTime}</div>}
-          </div> */}
-          <div>
-            <label htmlFor="maxGuests">Maximum number of guests</label>
-            <Field name="maxGuests" type="number" />
-            {errors.maxGuests && touched.maxGuests && <div>{errors.maxGuests}</div>}
-          </div>
+          <FormItem displayName="Name*" name="name" />
+          <FormItem displayName="Time and date*" name="time" type="datetime-local" />
+          <FormItem displayName="Location*" name="location" />
+          <FormItem displayName="Description*" name="description" />
+          {/* endTime */}
+          <FormItem displayName="Maximum number of guests" name="maxNoGuests" />
           <button type="submit">Submit</button>
         </Form>
       )}
