@@ -36,7 +36,7 @@ const initialValues = {
 // }
 
 export default function NewEvent() {
-  const url = "https://us-central1-dance-pair-server-42dc0.cloudfunctions.net/new";
+  const url = "https://us-central1-dance-pair-server-42dc0.cloudfunctions.net/newEvent";
   const handleSubmit = (values, actions) => {
     console.log(values);
     const res = axios.post(url, values)

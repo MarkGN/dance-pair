@@ -33,7 +33,7 @@ export default function Event() {
   useEffect(() => {
     async function fetchEventData() {
       try {
-        const url = "https://us-central1-dance-pair-server-42dc0.cloudfunctions.net/event";
+        const url = "https://us-central1-dance-pair-server-42dc0.cloudfunctions.net/getEvent";
         const response = await axios.post(url, {"id":id});
         setEventData(response.data);
       } catch (err) {
@@ -46,10 +46,8 @@ export default function Event() {
   const postUrl = "https://us-central1-dance-pair-server-42dc0.cloudfunctions.net/register";
   const handleSubmit = (values, actions) => {
     values.id = id;
-    console.log(values);
     const res = axios.post(postUrl, values)
       .then(() => {
-        console.log(res);
         actions.resetForm();
       })
       .catch(error => {
@@ -62,13 +60,13 @@ export default function Event() {
       <p>Event page</p>
       <p>{eventData ? String(eventData.name) : "Loading..."}</p>
       <p>{eventData ? String(eventData.location) : "Loading..."}</p>
-      <p>{eventData ? String(eventData.time) : "Loading..."}</p>
+      <p>{eventData ? String(new Date(eventData.time).toLocaleString('en-GB')) : "Loading..."}</p>
       <p>{eventData ? String(eventData.description) : "Loading..."}</p>
       <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
       {({ errors, touched }) => (
         <Form>
           <FormItem name="name" />
