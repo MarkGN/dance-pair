@@ -25,7 +25,7 @@ const initialValues = {
 * location
 * description
 * ?endTime
-* ?maxGuests
+* ?maxPairs
 */
 
 /*
@@ -43,7 +43,6 @@ export default function NewEvent() {
       const res = await axios.post(url, values);  
       console.log(res);
       console.log("/event/"+res.data);
-      // actions.resetForm();
       window.location.replace("/event/"+res.data);
     }
   
@@ -63,19 +62,11 @@ export default function NewEvent() {
           <FormItem displayName="Time and date*" name="time" type="datetime-local" />
           <FormItem displayName="Location*" name="location" />
           <FormItem displayName="Description*" name="description" />
-          <FormItem displayName="Maximum number of guests" name="maxNoGuests" type="number" />
+          {/* <FormItem displayName="Maximum number of pairs" name="maxNoPairs" type="number" /> */}
           <button type="submit">Submit</button>
         </Form>
       )}
     </Formik>
-    {/* <Formik onSubmit={(values, actions) => {
-      redirect("/");
-      return;
-    }}>
-        <Form>
-          <button type="submit">Home</button>
-        </Form>
-    </Formik> */}
     </div>
   );
 };

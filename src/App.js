@@ -3,6 +3,7 @@ import { lazy } from 'react'; // and Suspense
 
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import HomePage from "./HomePage";
+import NotFound from "./NotFound";
 
 const Event = lazy(() => import('./Event.jsx'));
 const NewEvent = lazy(() => import('./NewEvent.jsx'));
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/new" element={<NewEvent />}/>
         <Route path="/event/:id" element={<Event />}/>
         <Route exact path="/" element={<HomePage />}/>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
