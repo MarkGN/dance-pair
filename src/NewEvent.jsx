@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import FormItem from "./FormItem";
 import * as Yup from 'yup';
 
@@ -13,9 +13,10 @@ const validationSchema = Yup.object().shape({
 
 const initialValues = {
   name: "event name",
-  time: null,
-  location: null,
+  time: new Date(),
+  location: "",
   description: "event description",
+  maxNoGuests: 10
 };
 
 /*
@@ -27,29 +28,30 @@ const initialValues = {
 * ?maxGuests
 */
 
-// function MyField(name, args) {
-//   return <div>
-//     <label htmlFor={name}>{args.name || "Name*"}</label>
-//     <Field name={name} type={args.type || "text"} />
-//   {errors.name && touched.name && <div>{errors.name}</div>}
-// </div>
-// }
+/*
+I have a react-router app. How do I make it such that when I press a button to submit a form, the button is disabled and users can't accidentally double-submit; and the user is redirected to a new page?
+*/
 
 export default function NewEvent() {
+  let isSubmitting = false;
   const url = "https://us-central1-dance-pair-server-42dc0.cloudfunctions.net/newEvent";
-  const handleSubmit = (values, actions) => {
-    console.log(values);
-    const res = axios.post(url, values)
-      .then(() => {
-        console.log(res);
-        actions.resetForm();
-      })
-      .catch(error => {
-        console.log(error);
-      });
+  const handleSubmit = async (values, actions) => {
+    console.log(actions)
+    if (!isSubmitting) {
+      isSubmitting = true;
+      console.log(values);
+      const res = await axios.post(url, values);  
+      console.log(res);
+      console.log("/event/"+res.data);
+      // actions.resetForm();
+      window.location.replace("/event/"+res.data);
+    }
+  
   };
 
   return (
+    <div>
+
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
@@ -61,11 +63,19 @@ export default function NewEvent() {
           <FormItem displayName="Time and date*" name="time" type="datetime-local" />
           <FormItem displayName="Location*" name="location" />
           <FormItem displayName="Description*" name="description" />
-          {/* endTime */}
-          <FormItem displayName="Maximum number of guests" name="maxNoGuests" />
+          <FormItem displayName="Maximum number of guests" name="maxNoGuests" type="number" />
           <button type="submit">Submit</button>
         </Form>
       )}
     </Formik>
+    {/* <Formik onSubmit={(values, actions) => {
+      redirect("/");
+      return;
+    }}>
+        <Form>
+          <button type="submit">Home</button>
+        </Form>
+    </Formik> */}
+    </div>
   );
 };
