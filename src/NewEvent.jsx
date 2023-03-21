@@ -1,7 +1,8 @@
 import axios from 'axios';
-import React from 'react';
 import { Formik, Form } from 'formik';
 import FormItem from "./FormItem";
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 const validationSchema = Yup.object().shape({
@@ -11,62 +12,51 @@ const validationSchema = Yup.object().shape({
   description: Yup.string().required('Required'),
 });
 
+const now = new Date().toISOString();
+const superfluousDatestringLength = 8; // The last 8 digits of seconds, milliseconds, and a trailing Z
 const initialValues = {
-  name: "event name",
-  time: new Date(),
+  name: "",
+  time: now.substring(0,now.length-superfluousDatestringLength),
   location: "",
-  description: "event description",
+  description: "",
   maxNoGuests: 10
 };
 
-/*
-* name
-* time
-* location
-* description
-* ?endTime
-* ?maxPairs
-*/
-
-/*
-I have a react-router app. How do I make it such that when I press a button to submit a form, the button is disabled and users can't accidentally double-submit; and the user is redirected to a new page?
-*/
-
 export default function NewEvent() {
-  let isSubmitting = false;
+  const [isSubmitting, setSubmitting] = useState(false);
   const url = "https://us-central1-dance-pair-server-42dc0.cloudfunctions.net/newEvent";
+  const navigate = useNavigate()
+
   const handleSubmit = async (values, actions) => {
-    console.log(actions)
     if (!isSubmitting) {
-      isSubmitting = true;
-      console.log(values);
-      const res = await axios.post(url, values);  
-      console.log(res);
-      console.log("/event/"+res.data);
-      window.location.replace("/event/"+res.data);
+      setSubmitting(true);
+      const res = await axios.post(url, values);
+      navigate("/event/"+res.data)
     }
   
   };
 
   return (
     <div>
-
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
-      {({ errors, touched }) => (
-        <Form>
-          <FormItem displayName="Name*" name="name" />
-          <FormItem displayName="Time and date*" name="time" type="datetime-local" />
-          <FormItem displayName="Location*" name="location" />
-          <FormItem displayName="Description*" name="description" />
-          {/* <FormItem displayName="Maximum number of pairs" name="maxNoPairs" type="number" /> */}
-          <button type="submit">Submit</button>
-        </Form>
-      )}
-    </Formik>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ errors, touched }) => (
+          <Form>
+            <FormItem displayName="Name*" name="name" />
+            <FormItem displayName="Time and date*" name="time" type="datetime-local" />
+            <FormItem displayName="Location*" name="location" />
+            <FormItem displayName="Description*" name="description" />
+            {/* <FormItem displayName="Maximum number of pairs" name="maxNoPairs" type="number" /> */}
+            {isSubmitting ? 
+            <p>Event submitted: please wait.</p> : 
+            <button type="submit">Submit</button>}
+            
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

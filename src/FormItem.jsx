@@ -7,7 +7,7 @@ import React from "react";
 export default function FormItem(props) {
   return <div>
     <label htmlFor={props.name}>{props.displayName || props.name}</label>
-    <Field name={props.name} type={props.type || "text"} />
+    <Field name={props.name} placeholder={props.name} type={props.type || "text"} />
     <ErrorMessage name={props.name} />
   </div>
 }
