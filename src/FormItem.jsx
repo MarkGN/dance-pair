@@ -5,9 +5,8 @@ import { ErrorMessage, Field } from 'formik';
 import React from "react";
 
 export default function FormItem(props) {
-  return <div>
-    <label htmlFor={props.name}>{props.displayName || props.name}</label>
-    <Field name={props.name} placeholder={props.name} type={props.type || "text"} />
+  return <div className="form-group">
+    <Field name={props.name} placeholder={props.placeholder} type={props.type || "text"} />
     <ErrorMessage name={props.name} />
   </div>
 }

@@ -18,6 +18,7 @@ const initialValues = {
   name: "",
   time: now.substring(0,now.length-superfluousDatestringLength),
   location: "",
+  image: "",
   description: "",
   maxNoGuests: 10
 };
@@ -37,7 +38,8 @@ export default function NewEvent() {
   };
 
   return (
-    <div>
+    <div className="centred">
+      <h1>New event</h1>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -45,14 +47,16 @@ export default function NewEvent() {
       >
         {({ errors, touched }) => (
           <Form>
-            <FormItem displayName="Name*" name="name" />
-            <FormItem displayName="Time and date*" name="time" type="datetime-local" />
-            <FormItem displayName="Location*" name="location" />
-            <FormItem displayName="Description*" name="description" />
+            <FormItem placeholder="Name*" name="name" />
+            <FormItem placeholder="Time and date*" name="time" type="datetime-local" />
+            <FormItem placeholder="Location*" name="location" />
+            <FormItem placeholder="Image URL" name="image" />
+            {/* TODO show the above image */}
+            <FormItem placeholder="Description*" name="description" />
             {/* <FormItem displayName="Maximum number of pairs" name="maxNoPairs" type="number" /> */}
             {isSubmitting ? 
             <p>Event submitted: please wait.</p> : 
-            <button type="submit">Submit</button>}
+            <button className="btn btn-primary" type="submit">Create event</button>}
             
           </Form>
         )}

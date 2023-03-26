@@ -1,6 +1,4 @@
-// import axios from "axios";
 import React from "react";
-import { Link } from "react-router-dom";
 
 // TODO ask CG for advice.
 /*
@@ -39,14 +37,11 @@ react-dom.development.js:19055 Uncaught Error: A component suspended while respo
 */
 export default function HomePage() {
   return (
-    <div>
+    <div className="centred">
       <h1>Dance-Pair</h1>
-      <Link to="/new">Create new event</Link>
-      <p>This is an app for creating events such as dance parties where it's important to have equal numbers of boys and girls.</p>
-      <p>First, the event organiser creates an event. This redirects to a new event page. They then send the URL to anyone they wish to invite.</p>
-      <p>You can be either registered or invited. When you sign up for an event, if someone of the opposite sex is registered but not invited, both of you are invited and receive emails. If there isn't, you are registered, and will be invited when they sign up.</p>
-      <p>Invitations are first come, first served.</p>
-      <p>If Alice, Bob, Charlie, Dave, and Eve all sign up in that order, and Alice and Eve are girls and Bob, Charlie, and Dave are boys, then Alice and Bob will be invited together and Charlie and Eve will be invited together. This doesn't mean you specifically have to dance together! It does mean you should RSVP sooner than later.</p>
-      </div>
+      <p>This app is for events such as dance parties where it's important to have equal numbers of boys and girls.</p>
+      <p>The event organiser creates an event, which gives them a URL to share with invitees.</p>
+      <p>The system maintains a waitlist. When you register, if someone of the opposite sex is already waitlisted, you and the person at the front of the waitlist will be invited.</p>
+    </div>
   );
 }

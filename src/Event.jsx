@@ -13,8 +13,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const initialValues = {
-  name: "name",
-  email: "name@gmail.com",
+  name: "",
+  email: "",
   sex: ""
 };
 
@@ -40,7 +40,8 @@ export default function Event() {
         
         setEventData(response.data);
       } catch (err) {
-        setEventData({name: "Oh no! Error encountered: " + err, location: "The universe!", time: "For all eternity!", description: "Is doomed!"})
+        // setEventData({name: "Oh no! Error encountered: " + err, location: "The universe!", time: "For all eternity!", description: "Is doomed!"})
+        setEventData({error:err});
       }
     }
     fetchEventData();
@@ -60,12 +61,13 @@ export default function Event() {
   return (
     <div>
       {eventData ? <div>
-        {eventData.notFound ? <Event404 /> : <div>
-        <p>Event page</p>
-        <p>{eventData ? String(eventData.name) : "Loading..."}</p>
-        <p>{eventData ? String(eventData.location) : "Loading..."}</p>
-        <p>{eventData ? String(new Date(eventData.time).toLocaleString('en-GB')) : "Loading..."}</p>
-        <p>{eventData ? String(eventData.description) : "Loading..."}</p>
+        {eventData.error ? <Event404 /> : <div className="centred">
+        <h1>Event page</h1>
+        <p>{String(eventData.name)}</p>
+        <p>{String(eventData.location)}</p>
+        <p>{String(new Date(eventData.time).toLocaleString('en-GB'))}</p>
+        <p>{String(eventData.description)}</p>
+        {eventData.image ? <img src={eventData.image} alt="event" /> : <></>}
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -73,21 +75,21 @@ export default function Event() {
         >
         {({ errors, touched }) => (
           <Form>
-            <FormItem name="name" />
-            <FormItem name="email" type="email" />
+            <FormItem name="name" placeholder="name*" />
+            <FormItem name="email" placeholder="email*" type="email" />
             <div>
               <label htmlFor="male">
-                <Field id="male" type="radio" name="sex" value="male" />
                 Male
               </label>
+              <Field id="male" type="radio" name="sex" value="male" />
             </div>
             <div>
               <label htmlFor="female">
-                <Field id="female" type="radio" name="sex" value="female" />
                 Female
               </label>
+              <Field id="female" type="radio" name="sex" value="female" />
             </div>
-            <button type="submit">Submit</button>
+            {hasSubmitted===true ? <div><p>Submitted, please wait</p></div> : !hasSubmitted && <div><button className="btn btn-primary" type="submit">Register</button></div>}
             <ErrorMessage name="sex" />
           </Form>
         )}
@@ -96,13 +98,12 @@ export default function Event() {
       </div> : <LoadScreen />}
     <p>{{"registered" : "Successfully registered. We'll invite you as soon as we match you with a partner.", "invited": "You've been invited. Check your email!"}[hasSubmitted]}</p>
     </div>
-    
   );
 }
 
 function Event404() {
-  return <div>
-    <p>404: event not found.</p>
-    <p>:O</p>
+  return <div className="centred">
+    <h3>404: event not found.</h3>
+    <h4>:O</h4>
   </div>
 }
