@@ -23,18 +23,47 @@ const initialValues = {
   maxNoGuests: 10
 };
 
+function ImageFormItem(props) {
+  const [imageUrl, setImageUrl] = React.useState("");
+  const handleImageUrlChange = (event) => {
+    setImageUrl(event.target.value);
+    props.onChange && props.onChange(event); // call the onChange prop if it exists
+  };
+  return (
+    <div>
+      <FormItem
+        placeholder="Image URL (optional)"
+        name={props.name}
+        type="url"
+        onChange={handleImageUrlChange}
+        value={imageUrl}
+      />
+      {imageUrl && (
+        <img src={imageUrl} alt="Preview" style={{ maxWidth: "100%" }} />
+      )}
+    </div>
+  );
+}
+
 export default function NewEvent() {
   const [isSubmitting, setSubmitting] = useState(false);
+  const [isError, setError] = useState(false);
   const url = "https://us-central1-dance-pair-server-42dc0.cloudfunctions.net/newEvent";
   const navigate = useNavigate()
 
   const handleSubmit = async (values, actions) => {
     if (!isSubmitting) {
       setSubmitting(true);
-      const res = await axios.post(url, values);
-      navigate("/event/"+res.data)
-    }
-  
+      console.log("Submitting: ", values);
+      try {
+        const res = await axios.post(url, values);
+        console.log(res);
+        navigate("/event/"+res.data)
+      } catch (error) {
+        setError(error);
+        setSubmitting(false);
+      }
+    }  
   };
 
   return (
@@ -47,20 +76,31 @@ export default function NewEvent() {
       >
         {({ errors, touched }) => (
           <Form>
-            <FormItem placeholder="Name*" name="name" />
+            <FormItem placeholder="Event name*" name="name" />
             <FormItem placeholder="Time and date*" name="time" type="datetime-local" />
             <FormItem placeholder="Location*" name="location" />
-            <FormItem placeholder="Image URL" name="image" />
-            {/* TODO show the above image */}
+            <ImageFormItem name="image" />
             <FormItem placeholder="Description*" name="description" />
             {/* <FormItem displayName="Maximum number of pairs" name="maxNoPairs" type="number" /> */}
             {isSubmitting ? 
             <p>Event submitted: please wait.</p> : 
             <button className="btn btn-primary" type="submit">Create event</button>}
-            
+            {isError ? <p>{JSON.stringify(isError)}</p> : <></>}
           </Form>
         )}
       </Formik>
     </div>
   );
 };
+
+// function FormItem(props) {
+//   const [val, setVal] = React.useState("");
+//   const onChange = (event) => {
+//     setVal(event.target.value);
+//     props.onChange && props.onChange(event);
+//   }
+//   return <div className="form-group">
+//     <Field name={props.name} onChange={onChange} placeholder={props.placeholder} type={props.type || "text"} value={val} />
+//     <ErrorMessage name={props.name} />
+//   </div>
+// }
