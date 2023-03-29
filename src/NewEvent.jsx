@@ -32,7 +32,7 @@ function ImageFormItem(props) {
   return (
     <div>
       <FormItem
-        placeholder="Image URL (optional)"
+        placeholder="Image URL"
         name={props.name}
         type="url"
         onChange={handleImageUrlChange}
@@ -69,6 +69,7 @@ export default function NewEvent() {
   return (
     <div className="centred">
       <h1>New event</h1>
+      <p>Asterisked fields are required.</p>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -80,8 +81,7 @@ export default function NewEvent() {
             <FormItem placeholder="Time and date*" name="time" type="datetime-local" />
             <FormItem placeholder="Location*" name="location" />
             <ImageFormItem name="image" />
-            <FormItem placeholder="Description*" name="description" />
-            {/* <FormItem displayName="Maximum number of pairs" name="maxNoPairs" type="number" /> */}
+            <FormItem placeholder="Description*" name="description" as="textarea" />
             {isSubmitting ? 
             <p>Event submitted: please wait.</p> : 
             <button className="btn btn-primary" type="submit">Create event</button>}
