@@ -80,11 +80,12 @@ export default function NewEvent() {
       >
         {({ errors, touched }) => (
           <Form>
-            <FormItem placeholder="Event name*" name="name" />
+            <FormItem maxlength={40} placeholder="Event name*" name="name" />
             <FormItem placeholder="Time and date*" name="time" type="datetime-local" />
-            <FormItem placeholder="Location*" name="location" />
+            <p>Date-times are local.</p>
+            <FormItem maxlength={40} placeholder="Location*" name="location" />
             <ImageFormItem name="image" />
-            <FormItem placeholder="Description*" name="description" as="textarea" />
+            <FormItem maxlength={500} placeholder="Description*" name="description" as="textarea" />
             {isSubmitting ? 
             <p>Event submitted: please wait.</p> : 
             <button className="btn btn-primary" type="submit">Create event</button>}
