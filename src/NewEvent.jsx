@@ -12,7 +12,10 @@ const validationSchema = Yup.object().shape({
   description: Yup.string().required('Required'),
 });
 
-const now = new Date().toISOString();
+// const now = new Date().toISOString();
+let now = new Date(); 
+const offset = now.getTimezoneOffset()*60000; 
+now=new Date(now.getTime() - offset).toISOString();
 const superfluousDatestringLength = 8; // The last 8 digits of seconds, milliseconds, and a trailing Z
 const initialValues = {
   name: "",
