@@ -1,14 +1,15 @@
-import axios from 'axios';
-import { ErrorMessage, Field, Formik, Form } from 'formik';
+import axios from "axios";
+import { ErrorMessage, Field, Formik, Form } from "formik";
 import FormItem from "./FormItem";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import * as Yup from "yup";
+import CopyToClipboardButton from "./ClipboardButton";
 import LoadScreen from "./LoadScreen";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Required'),
-  email: Yup.string().email("Invalid email address").required('Required'),
+  name: Yup.string().required("Required"),
+  email: Yup.string().email("Invalid email address").required("Required"),
   sex: Yup.string().required("Gender is required"),
 });
 
@@ -18,20 +19,11 @@ const initialValues = {
   sex: ""
 };
 
-/*
-* name
-* time
-* location
-* description
-* ?endTime
-* ?maxGuests
-*/
-
 export default function Event() {
   const [eventData, setEventData] = useState(null);
   const { id } = useParams();
   const [hasSubmitted, setSubmitted] = useState(false);
-  const [isError, setError] = useState(false);
+  const [registrationError, setRegistrationError] = useState(false);
 
   useEffect(() => {
     async function fetchEventData() {
@@ -39,9 +31,8 @@ export default function Event() {
         const url = "https://us-central1-dance-pair-server-42dc0.cloudfunctions.net/getEvent";
         const response = await axios.post(url, {"id":id});
         setEventData(response.data);
-        setError(false);
+        setRegistrationError(false);
       } catch (err) {
-        // setEventData({name: "Oh no! Error encountered: " + err, location: "The universe!", time: "For all eternity!", description: "Is doomed!"})
         setEventData({error:err});
       }
     }
@@ -57,10 +48,10 @@ export default function Event() {
         const res = await axios.post(postUrl, values);
         console.log(res);
         setSubmitted(res.data);
-        setError(false);
+        setRegistrationError(false);
       } catch (error) {
         console.log(error);
-        setError(error);
+        setRegistrationError(error);
         setSubmitted(false);
       }
     }
@@ -71,9 +62,10 @@ export default function Event() {
       {eventData ? <div>
         {eventData.error ? <Event404 /> : <div>
         <h1>Event page</h1>
-        <p>{String(eventData.name)}</p>
+        <h3>{String(eventData.name)}</h3>
+        <CopyToClipboardButton text={"https://dance-pair.web.app/event/"+id} />
         <p>{String(eventData.location)}</p>
-        <p>{String(new Date(eventData.time).toLocaleString('en-GB'))}</p>
+        <p>{String(new Date(eventData.time).toLocaleString("en-GB"))}</p>
         <p>{String(eventData.description)}</p>
         {eventData.image ? <img src={eventData.image} alt="event" /> : <></>}
         <Formik
@@ -99,7 +91,7 @@ export default function Event() {
             </div>
             <ErrorMessage name="sex" />
             {hasSubmitted===true ? <div><p>Submitted, please wait</p></div> : !hasSubmitted && <div><button className="btn btn-primary" type="submit">Register</button></div>}
-            {isError ? <p>{JSON.stringify(isError)}</p> : <></>}
+            {registrationError ? <p>{JSON.stringify(registrationError)}</p> : <></>}
           </Form>
         )}
         </Formik>

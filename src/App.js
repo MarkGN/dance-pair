@@ -3,11 +3,9 @@ import { lazy, Suspense } from 'react'; // and Suspense
 import React from 'react';
 
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-// import Event from './Event.jsx';
 import Header from "./Header";
 import HomePage from "./HomePage";
 import LoadScreen from "./LoadScreen";
-// import NewEvent from "./NewEvent";
 import NotFound from "./NotFound";
 
 const Event = lazy(() => import('./Event.jsx'));
