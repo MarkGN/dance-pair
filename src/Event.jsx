@@ -63,7 +63,7 @@ export default function Event() {
         {eventData.error ? <Event404 /> : <div>
         <h1>Event page</h1>
         <h3>{String(eventData.name)}</h3>
-        <CopyToClipboardButton text={"https://dance-pair.web.app/event/"+id} />
+        <p>Share URL to invite others: <CopyToClipboardButton text={"https://dance-pair.web.app/event/"+id} /></p>
         <p>{String(eventData.location)}</p>
         <p>{String(new Date(eventData.time).toLocaleString("en-GB"))}</p>
         <p>{String(eventData.description)}</p>

@@ -4,3 +4,4 @@ public
 
 .firebase/
 build/
+firebase-debug.log

@@ -10,7 +10,7 @@ export default function CopyToClipboardButton(props) {
 
   return (
     <button onClick={handleCopy}>
-      {copied ? "Copied!" : "Copy url to clipboard"}
+      {copied ? "Copied!" : "Copy URL to clipboard"}
     </button>
   );
 }
