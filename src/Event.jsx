@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import * as Yup from "yup";
 import CopyToClipboardButton from "./ClipboardButton";
 import LoadScreen from "./LoadScreen";
+import Cookie from "js-cookie";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
@@ -14,15 +15,16 @@ const validationSchema = Yup.object().shape({
 });
 
 const initialValues = {
-  name: "",
-  email: "",
-  sex: ""
+  name: Cookie.get("name") || "",
+  email: Cookie.get("email") || "",
+  sex: Cookie.get("sex") || ""
 };
 
 export default function Event() {
   const [eventData, setEventData] = useState(null);
   const { id } = useParams();
   const [hasSubmitted, setSubmitted] = useState(false);
+  const [hasRegistered, setRegistered] = useState(false);
   const [registrationError, setRegistrationError] = useState(false);
 
   useEffect(() => {
@@ -44,10 +46,13 @@ export default function Event() {
     if (!hasSubmitted) {
       setSubmitted(true);
       values.id = id;
+      ["name", "email", "sex"].forEach(field => {
+        Cookie.set(field, values[field]);
+      })
       try {
         const res = await axios.post(postUrl, values);
         console.log(res);
-        setSubmitted(res.data);
+        setRegistered(res.data);
         setRegistrationError(false);
       } catch (error) {
         console.log(error);
@@ -90,14 +95,15 @@ export default function Event() {
               <Field id="female" type="radio" name="sex" value="female" />
             </div>
             <ErrorMessage name="sex" />
-            {hasSubmitted===true ? <div><p>Submitted, please wait</p></div> : !hasSubmitted && <div><button className="btn btn-primary" type="submit">Register</button></div>}
+            {hasSubmitted ? <div><p>Submitted{hasRegistered ? "" : ", please wait"}</p></div> : !hasSubmitted && <div><button className="btn btn-primary" type="submit">Register</button></div>}
             {registrationError ? <p>{JSON.stringify(registrationError)}</p> : <></>}
           </Form>
         )}
         </Formik>
       </div>}
       </div> : <LoadScreen />}
-      <p>{{"registered" : "Successfully registered. We'll invite you as soon as we match you with a partner.", "invited": "You've been invited. Check your email!"}[hasSubmitted]}</p>
+      <p>{{"registered" : "Successfully registered. We'll invite you as soon as we match you with a partner.", 
+        "invited": "You've been invited. Check your email!"}[hasRegistered]}</p>
     </div>
   );
 }
