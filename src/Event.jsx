@@ -55,8 +55,8 @@ export default function Event() {
         setRegistered(res.data);
         setRegistrationError(false);
       } catch (error) {
-        console.log(error);
-        setRegistrationError(error);
+        console.error(error);
+        setRegistrationError((error.response && error.response.data && error.response.data.error) || JSON.stringify(error) || "Unknown error");
         setSubmitted(false);
       }
     }
@@ -96,7 +96,7 @@ export default function Event() {
             </div>
             <ErrorMessage name="sex" />
             {hasSubmitted ? <div><p>Submitted{hasRegistered ? "" : ", please wait"}</p></div> : !hasSubmitted && <div><button className="btn btn-primary" type="submit">Register</button></div>}
-            {registrationError ? <p>{JSON.stringify(registrationError)}</p> : <></>}
+            {registrationError ? <p>{(registrationError)}</p> : <></>}
           </Form>
         )}
         </Formik>
