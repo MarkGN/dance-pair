@@ -1,6 +1,6 @@
 import './styles.css';
-import { lazy, Suspense } from 'react'; // and Suspense
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
+// import React from 'react';
 
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Header from "./Header";
@@ -15,7 +15,7 @@ export default function App() {
   return (
     <div>
       <Router>
-      <Header />
+        <Header />
         <Routes>
           <Route path="/new" element={<Suspense fallback={<LoadScreen/>}><NewEvent /></Suspense>}/>
           <Route path="/event/:id" element={<Suspense fallback={<LoadScreen/>}><Event /></Suspense>}/>

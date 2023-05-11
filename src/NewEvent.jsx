@@ -85,7 +85,7 @@ export default function NewEvent() {
             <p>Date-times are local.</p>
             <FormItem maxlength={40} placeholder="Location*" name="location" />
             <ImageFormItem name="image" />
-            <FormItem maxlength={500} placeholder="Description*" name="description" as="textarea" />
+            <FormItem className="description" maxlength={500} placeholder="Description*" name="description" as="textarea" resize="vertical" />
             {isSubmitting ? 
             <p>Event submitted: please wait.</p> : 
             <button className="btn btn-primary" type="submit">Create event</button>}
